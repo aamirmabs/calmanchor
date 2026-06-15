@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en-GB" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CalmAnchor — A digital companion for CPTSD self-management. Project documentation, status tracking, and roadmap.">
+<meta name="theme-color" content="#1C4A32">
+<title>CalmAnchor — Project Documentation</title>
+
+<!-- Inline SVG favicon (silences 404, keeps the page self-contained) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><rect width='28' height='28' rx='7' fill='%231C4A32'/><path d='M14 6v2M14 20v2M10 14H7M21 14h-3' stroke='%23F4F1EB' stroke-width='1.4' stroke-linecap='round' fill='none'/><path d='M14 8a6 6 0 0 1 6 6c0 2.5-1.5 4.7-3.8 5.7L14 22l-2.2-2.3A6 6 0 0 1 8 14a6 6 0 0 1 6-6z' stroke='%23F4F1EB' stroke-width='1.4' fill='none'/><circle cx='14' cy='14' r='2' fill='%23F4F1EB'/></svg>" sizes="any">
+
+<!-- Fonts: Cabinet Grotesk (display) and Satoshi (body) -->
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700&f[]=cabinet-grotesk@400,500,700,800&display=swap" rel="stylesheet">
+
+<!-- Design system tokens + components -->
+<link rel="stylesheet" href="design-system/calm-anchor-design-system.css">
+
+<!-- Page-specific styles (extends the design system) -->
+<link rel="stylesheet" href="docs.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="logo">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-label="CalmAnchor logo">
+      <rect width="28" height="28" rx="7" fill="var(--color-primary)"/>
+      <path d="M14 6v2M14 20v2M10 14H7M21 14h-3" stroke="#F4F1EB" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M14 8a6 6 0 0 1 6 6c0 2.5-1.5 4.7-3.8 5.7L14 22l-2.2-2.3A6 6 0 0 1 8 14a6 6 0 0 1 6-6z" stroke="#F4F1EB" stroke-width="1.4" fill="none"/>
+      <circle cx="14" cy="14" r="2" fill="#F4F1EB"/>
+    </svg>
+    <span>CalmAnchor</span>
+  </div>
+  <div class="header-right">
+    <div class="docs-header-meta">
+      <div class="docs-header-meta-strong">Project Documentation</div>
+      <div>Last updated June 2026</div>
+    </div>
+    <a class="docs-external-link" href="https://github.com/university-of-greater-manchester/cptsd_figma_design_and_app_code" target="_blank" rel="noopener noreferrer" aria-label="View the project on GitHub">
+      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" aria-label="Toggle dark mode">🌙 Dark mode</button>
+  </div>
+</header>
+
+<!-- ===== PAGE CONTENT ===== -->
+<main class="docs-page">
+
+  <!-- ===== HERO ===== -->
+  <section class="docs-hero" aria-labelledby="hero-title">
+    <div class="docs-hero-eyebrow">Project Documentation · v1.0</div>
+    <h1 class="docs-hero-title" id="hero-title">CalmAnchor</h1>
+    <p class="docs-hero-tagline">A quiet digital companion for CPTSD self-management.</p>
+    <p class="docs-hero-desc">
+      CalmAnchor transforms Kimberley Hajee's 120-page peer-created CPTSD Toolkit into an interactive,
+      accessible web and mobile application. It does not replace the workbook — it makes it usable
+      in real time, when the user is dysregulated, overwhelmed, or in crisis. All data stays local.
+      The user is always in control.
+    </p>
+    <div class="docs-hero-tags">
+      <span class="tag green">✦ Trauma-informed</span>
+      <span class="tag green">✦ Single-user, private</span>
+      <span class="tag green">✦ Offline-first</span>
+      <span class="tag">No AI</span>
+      <span class="tag">No biometrics</span>
+      <span class="tag">No data sharing</span>
+    </div>
+    <nav class="docs-toc" aria-label="Section navigation">
+      <a class="docs-toc-link" href="#overview"><span class="docs-toc-link-num">01</span> Overview</a>
+      <a class="docs-toc-link" href="#features"><span class="docs-toc-link-num">02</span> Features</a>
+      <a class="docs-toc-link" href="#status"><span class="docs-toc-link-num">03</span> Status</a>
+      <a class="docs-toc-link" href="#architecture"><span class="docs-toc-link-num">04</span> Architecture</a>
+      <a class="docs-toc-link" href="#team"><span class="docs-toc-link-num">05</span> Team</a>
+    </nav>
+  </section>
+
+  <!-- ===== 01 — PROJECT OVERVIEW ===== -->
+  <section id="overview" aria-labelledby="overview-title">
+    <div class="docs-eyebrow">01 — Overview</div>
+    <h2 class="docs-section-title" id="overview-title">Project at a Glance</h2>
+    <p class="docs-section-sub">
+      CalmAnchor is funded by the Jenkinson Award and developed at the University of Greater
+      Manchester. The project is currently in its design phase, with the technical specification
+      and trauma-informed design system finalised.
+    </p>
+
+    <div class="docs-overview-grid">
+      <div class="docs-overview-card">
+        <div class="docs-overview-icon" aria-hidden="true">◈</div>
+        <div>
+          <div class="docs-overview-label">Funder</div>
+          <div class="docs-overview-value">Jenkinson Award</div>
+          <div class="docs-overview-desc">Grant reference JA27017 · £10,000 · Aug 2026 – Jul 2027</div>
+        </div>
+      </div>
+
+      <div class="docs-overview-card">
+        <div class="docs-overview-icon docs-overview-icon--accent" aria-hidden="true">⌂</div>
+        <div>
+          <div class="docs-overview-label">Host institution</div>
+          <div class="docs-overview-value">University of Greater Manchester</div>
+          <div class="docs-overview-desc">School of Arts &amp; Creative Technologies / Computing</div>
+        </div>
+      </div>
+
+      <div class="docs-overview-card">
+        <div class="docs-overview-icon docs-overview-icon--secondary" aria-hidden="true">◐</div>
+        <div>
+          <div class="docs-overview-label">Current phase</div>
+          <div class="docs-overview-value">Design Complete</div>
+          <div class="docs-overview-desc">Specification v1.0 finalised · design system v2.0 active · no working code yet</div>
+        </div>
+      </div>
+
+      <div class="docs-overview-card">
+        <div class="docs-overview-icon docs-overview-icon--info" aria-hidden="true">✦</div>
+        <div>
+          <div class="docs-overview-label">Source material</div>
+          <div class="docs-overview-value">Kimberley's Toolkit</div>
+          <div class="docs-overview-desc">120-page CPTSD workbook covering regulation, survival responses &amp; grounding</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 02 — CORE FEATURES (The Core 7 + 2) ===== -->
+  <section id="features" aria-labelledby="features-title">
+    <div class="docs-eyebrow">02 — Scope</div>
+    <h2 class="docs-section-title" id="features-title">The Core 7 + 2</h2>
+    <p class="docs-section-sub">
+      The MVP consists of seven core features and two supporting features. Every feature maps
+      directly to a chapter or exercise in Kimberley's Toolkit. The app does not invent content.
+    </p>
+
+    <div class="docs-feature-list">
+
+      <div class="docs-feature-item">
+        <div class="docs-feature-num">01</div>
+        <div class="docs-feature-content">
+          <div class="docs-feature-header">
+            <div class="docs-feature-name">Interactive Toolkit Browser</div>
+            <span class="docs-feature-kind">Core</span>
+          </div>
+          <p class="docs-feature-desc">Embedded PDF viewer with chapter navigation, bookmarks, and an in-app search. PDF is bundled for offline reading.</p>
+        </div>
+      </div>
+
+      <div class="docs-feature-item">
+        <div class="docs-feature-num">02</div>
+        <div class="docs-feature-content">
+          <div class="docs-feature-header">
+            <div class="docs-feature-name">Private Reflection Diary</div>
+            <span class="docs-feature-kind">Core</span>
+          </div>
+          <p class="docs-feature-desc">A safe, private space to journal with three gentle prompts. Optional nervous-system-state tagging. No streaks, no pressure.</p>
+        </div>
+      </div>
+
+      <div class="docs-feature-item">
+        <div class="docs-feature-num">03</div>
+        <div class="docs-feature-content">
+          <div class="docs-feature-header">
+            <div class="docs-feature-name">Self-Soothing Exercise Menu</div>
+            <span class="docs-feature-kind">Core</span>
+          </div>
+          <p class="docs-feature-desc">Digitised exercises across five categories: Body, Breath, Voice, Mind, Senses — plus somatic therapy techniques. Guided timers and audio cues.</p>
+        </div>
+      </div>
+
+      <div class="docs-feature-item">
+        <div class="docs-feature-num">04</div>
+        <div class="docs-feature-content">
+          <div class="docs-feature-header">
+            <div class="docs-feature-name">Crisis Grounding Widget</div>
+            <span class="docs-feature-kind">Core</span>
+          </div>
+          <p class="docs-feature-desc">One-tap, always-accessible grounding. Offers 5-4-3-2-1 sensory grounding, box breathing, and a user-curated Quick Reset. Crisis contacts always visible.</p>
+        </div>
+      </div>
+
+      <div class="docs-feature-item">
+        <div class="docs-feature-num">05</div>
+        <div class="docs-feature-content">
+          <div class="docs-feature-header">
+            <div class="docs-feature-name">Manual Trigger &amp; State Tracker</div>
+            <span class="docs-feature-kind">Core</span>
+          </div>
+          <p class="docs-feature-desc">User-initiated logging of triggers, context, and survival responses (Fight, Flight, Freeze, Fawn). No automatic detection. All fields optional.</p>
+        </div>
+      </div>
+
+      <div class="docs-feature-item">
+        <div class="docs-feature-num">06</div>
+        <div class="docs-feature-content">
+          <div class="docs-feature-header">
+            <div class="docs-feature-name">User Portfolio</div>
+            <span class="docs-feature-kind">Core</span>
+          </div>
+          <p class="docs-feature-desc">A personal "comfort box" of favourited exercises, safe-space notes, and custom strategies. Reorderable, categorised, fully user-controlled.</p>
+        </div>
+      </div>
+
+      <div class="docs-feature-item">
+        <div class="docs-feature-num">07</div>
+        <div class="docs-feature-content">
+          <div class="docs-feature-header">
+            <div class="docs-feature-name">Pattern Dashboard</div>
+            <span class="docs-feature-kind">Core</span>
+          </div>
+          <p class="docs-feature-desc">Gentle, descriptive charts from manual logs only — trigger frequency, response distribution, exercise effectiveness, time-of-day patterns. Never diagnostic.</p>
+        </div>
+      </div>
+
+      <div class="docs-feature-item">
+        <div class="docs-feature-num">08</div>
+        <div class="docs-feature-content">
+          <div class="docs-feature-header">
+            <div class="docs-feature-name">Onboarding Workflow</div>
+            <span class="docs-feature-kind docs-feature-kind--supporting">Supporting</span>
+          </div>
+          <p class="docs-feature-desc">A warm, skippable introduction to the app and the toolkit. Every step can be skipped. No registration, no personal data collected.</p>
+        </div>
+      </div>
+
+      <div class="docs-feature-item">
+        <div class="docs-feature-num">09</div>
+        <div class="docs-feature-content">
+          <div class="docs-feature-header">
+            <div class="docs-feature-name">Simple Data Export</div>
+            <span class="docs-feature-kind docs-feature-kind--supporting">Supporting</span>
+          </div>
+          <p class="docs-feature-desc">User-initiated CSV or Excel export of diary, trigger logs, and portfolio. Local-only. No cloud upload. The user's data is theirs to take.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 03 — PROJECT STATUS & ROADMAP ===== -->
+  <section id="status" aria-labelledby="status-title">
+    <div class="docs-eyebrow">03 — Status</div>
+    <h2 class="docs-section-title" id="status-title">Project Status &amp; Roadmap</h2>
+    <p class="docs-section-sub">
+      Each feature card below shows current progress. To update, edit the class on the
+      <code>.docs-status-card</code> element. Change
+      <code>status-not-started</code> to <code>status-in-progress</code>,
+      <code>status-completed</code>, or <code>status-blocked</code>. The
+      <code>docs-status-notes</code> paragraph is a free-text area for project notes.
+    </p>
+
+    <div class="docs-status-instructions" role="note">
+      <div>
+        <strong>How to update:</strong> find the feature card, change the status class
+        (e.g. <code>class="docs-status-card status-completed"</code>) and update the
+        badge label inside it. The colour, border, and accessibility all update automatically.
+      </div>
+    </div>
+
+    <div class="docs-status-grid">
+
+      <!-- 01 — Toolkit Browser -->
+      <article class="docs-status-card status-not-started">
+        <div class="docs-status-header">
+          <span class="docs-status-num">01 · Core</span>
+          <span class="docs-status-badge">
+            <span class="docs-status-badge-dot" aria-hidden="true"></span>
+            Not started
+          </span>
+        </div>
+        <h3 class="docs-status-name">Interactive Toolkit Browser</h3>
+        <p class="docs-status-desc">PDF viewer with chapter navigation, bookmarks, search. PDF to be bundled for offline use.</p>
+        <p class="docs-status-notes">Awaiting intern onboarding. PDF asset is in <code>Documentation/toolkit_compressed.pdf</code>.</p>
+      </article>
+
+      <!-- 02 — Diary -->
+      <article class="docs-status-card status-not-started">
+        <div class="docs-status-header">
+          <span class="docs-status-num">02 · Core</span>
+          <span class="docs-status-badge">
+            <span class="docs-status-badge-dot" aria-hidden="true"></span>
+            Not started
+          </span>
+        </div>
+        <h3 class="docs-status-name">Private Reflection Diary</h3>
+        <p class="docs-status-desc">Local-first journal with three prompts, optional state tagging, chronological entry list.</p>
+        <p class="docs-status-notes">Storage layer needs to be designed alongside the Trigger Tracker (shared data model).</p>
+      </article>
+
+      <!-- 03 — Exercise Menu -->
+      <article class="docs-status-card status-not-started">
+        <div class="docs-status-header">
+          <span class="docs-status-num">03 · Core</span>
+          <span class="docs-status-badge">
+            <span class="docs-status-badge-dot" aria-hidden="true"></span>
+            Not started
+          </span>
+        </div>
+        <h3 class="docs-status-name">Self-Soothing Exercise Menu</h3>
+        <p class="docs-status-desc">Five categories (Body, Breath, Voice, Mind, Senses) plus somatic therapy. Guided timers, audio cues.</p>
+        <p class="docs-status-notes">Exercise content to be sourced from toolkit pages 23–34, 99–113.</p>
+      </article>
+
+      <!-- 04 — Crisis Widget -->
+      <article class="docs-status-card status-not-started">
+        <div class="docs-status-header">
+          <span class="docs-status-num">04 · Core</span>
+          <span class="docs-status-badge">
+            <span class="docs-status-badge-dot" aria-hidden="true"></span>
+            Not started
+          </span>
+        </div>
+        <h3 class="docs-status-name">Crisis Grounding Widget</h3>
+        <p class="docs-status-desc">Persistent, one-tap grounding. 5-4-3-2-1, box breathing, Quick Reset. Crisis contacts always visible.</p>
+        <p class="docs-status-notes">Highest-priority feature. Must work fully offline. UK crisis contacts (Samaritans, Shout, NHS) ready.</p>
+      </article>
+
+      <!-- 05 — Trigger Tracker -->
+      <article class="docs-status-card status-not-started">
+        <div class="docs-status-header">
+          <span class="docs-status-num">05 · Core</span>
+          <span class="docs-status-badge">
+            <span class="docs-status-badge-dot" aria-hidden="true"></span>
+            Not started
+          </span>
+        </div>
+        <h3 class="docs-status-name">Manual Trigger &amp; State Tracker</h3>
+        <p class="docs-status-desc">User-initiated logging. Optional fields, three-level intensity, four survival responses plus "not sure".</p>
+        <p class="docs-status-notes">Form to be designed one-field-at-a-time to avoid overwhelm.</p>
+      </article>
+
+      <!-- 06 — Portfolio -->
+      <article class="docs-status-card status-not-started">
+        <div class="docs-status-header">
+          <span class="docs-status-num">06 · Core</span>
+          <span class="docs-status-badge">
+            <span class="docs-status-badge-dot" aria-hidden="true"></span>
+            Not started
+          </span>
+        </div>
+        <h3 class="docs-status-name">User Portfolio</h3>
+        <p class="docs-status-desc">Personal "comfort box" — favourited exercises, safe-space notes, custom strategies, user categories.</p>
+        <p class="docs-status-notes">Depends on Exercise Menu being in place (top-3 items feed the Crisis Widget Quick Reset).</p>
+      </article>
+
+      <!-- 07 — Pattern Dashboard -->
+      <article class="docs-status-card status-not-started">
+        <div class="docs-status-header">
+          <span class="docs-status-num">07 · Core</span>
+          <span class="docs-status-badge">
+            <span class="docs-status-badge-dot" aria-hidden="true"></span>
+            Not started
+          </span>
+        </div>
+        <h3 class="docs-status-name">Pattern Dashboard</h3>
+        <p class="docs-status-desc">Four descriptive charts from manual logs. Trigger frequency, response distribution, exercise effectiveness, time-of-day.</p>
+        <p class="docs-status-notes">Build last. Requires Diary, Tracker, and Portfolio data to be meaningful.</p>
+      </article>
+
+      <!-- 08 — Onboarding -->
+      <article class="docs-status-card status-not-started">
+        <div class="docs-status-header">
+          <span class="docs-status-num">08 · Supporting</span>
+          <span class="docs-status-badge">
+            <span class="docs-status-badge-dot" aria-hidden="true"></span>
+            Not started
+          </span>
+        </div>
+        <h3 class="docs-status-name">Onboarding Workflow</h3>
+        <p class="docs-status-desc">Seven gentle, skippable introduction steps. No progress bar, no registration, no personal data.</p>
+        <p class="docs-status-notes">Copy drafted in technical specification §3.8. To be implemented as soft fade transitions, not slides.</p>
+      </article>
+
+      <!-- 09 — Export -->
+      <article class="docs-status-card status-not-started">
+        <div class="docs-status-header">
+          <span class="docs-status-num">09 · Supporting</span>
+          <span class="docs-status-badge">
+            <span class="docs-status-badge-dot" aria-hidden="true"></span>
+            Not started
+          </span>
+        </div>
+        <h3 class="docs-status-name">Simple Data Export</h3>
+        <p class="docs-status-desc">User-initiated CSV/Excel export of diary, triggers, and portfolio. Local file generation, no server.</p>
+        <p class="docs-status-notes">Standard library (e.g. SheetJS or PapaParse) to be confirmed in architecture review.</p>
+      </article>
+
+      <!-- PROJECT SETUP — non-feature work that has happened -->
+      <article class="docs-status-card status-completed">
+        <div class="docs-status-header">
+          <span class="docs-status-num">Setup</span>
+          <span class="docs-status-badge">
+            <span class="docs-status-badge-dot" aria-hidden="true"></span>
+            Completed
+          </span>
+        </div>
+        <h3 class="docs-status-name">Design system v2.0</h3>
+        <p class="docs-status-desc">Trauma-informed colour tokens, typography, spacing, and 35+ components across light and dark modes.</p>
+        <p class="docs-status-notes">Lives at <code>design-system/calm-anchor-design-system.css</code>. All pages and components reference CSS custom properties.</p>
+      </article>
+
+      <article class="docs-status-card status-completed">
+        <div class="docs-status-header">
+          <span class="docs-status-num">Setup</span>
+          <span class="docs-status-badge">
+            <span class="docs-status-badge-dot" aria-hidden="true"></span>
+            Completed
+          </span>
+        </div>
+        <h3 class="docs-status-name">Technical specification v1.0</h3>
+        <p class="docs-status-desc">Full project charter, feature definitions, data model, privacy &amp; offline strategy, and out-of-scope rationale.</p>
+        <p class="docs-status-notes">Finalised June 2026. Located at <code>docs/technical-specification.md</code>.</p>
+      </article>
+
+      <article class="docs-status-card status-in-progress">
+        <div class="docs-status-header">
+          <span class="docs-status-num">Setup</span>
+          <span class="docs-status-badge">
+            <span class="docs-status-badge-dot" aria-hidden="true"></span>
+            In progress
+          </span>
+        </div>
+        <h3 class="docs-status-name">Intern recruitment</h3>
+        <p class="docs-status-desc">Three Ryley Student Internships approved under the Jenkinson Award. Job description drafted.</p>
+        <p class="docs-status-notes">Awaiting Sam Johnson's review of the JD. Aamir has a candidate in mind (MSc supervisee).</p>
+      </article>
+
+      <article class="docs-status-card status-in-progress">
+        <div class="docs-status-header">
+          <span class="docs-status-num">Setup</span>
+          <span class="docs-status-badge">
+            <span class="docs-status-badge-dot" aria-hidden="true"></span>
+            In progress
+          </span>
+        </div>
+        <h3 class="docs-status-name">Project documentation site</h3>
+        <p class="docs-status-desc">This page. Single-file static documentation for stakeholders, deployable to GitHub Pages.</p>
+        <p class="docs-status-notes">Designed to be edited by hand. Status badges update via class names — no build step, no backend.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===== 04 — TECHNICAL ARCHITECTURE ===== -->
+  <section id="architecture" aria-labelledby="architecture-title">
+    <div class="docs-eyebrow">04 — Technical</div>
+    <h2 class="docs-section-title" id="architecture-title">Technical Architecture</h2>
+    <p class="docs-section-sub">
+      A pragmatic, single-user stack. The app is a Progressive Web App with a local-first data
+      model — everything works offline, especially the Crisis Widget. No cloud sync by default.
+    </p>
+
+    <div class="docs-tech-grid">
+      <div class="docs-tech-item">
+        <div class="docs-tech-bullet" aria-hidden="true"></div>
+        <div class="docs-tech-content">
+          <div class="docs-tech-name">Frontend · Next.js + TypeScript</div>
+          <div class="docs-tech-desc">React-based PWA. Single-page app structure, installable on iOS and Android.</div>
+        </div>
+      </div>
+      <div class="docs-tech-item">
+        <div class="docs-tech-bullet" aria-hidden="true"></div>
+        <div class="docs-tech-content">
+          <div class="docs-tech-name">Styling · Tailwind CSS</div>
+          <div class="docs-tech-desc">Configured against the existing design system tokens. CSS custom properties remain the single source of truth.</div>
+        </div>
+      </div>
+      <div class="docs-tech-item">
+        <div class="docs-tech-bullet" aria-hidden="true"></div>
+        <div class="docs-tech-content">
+          <div class="docs-tech-name">Database · PostgreSQL (Supabase)</div>
+          <div class="docs-tech-desc">Available for opt-in backup/sync only. Local storage (IndexedDB / SQLite) is the primary store.</div>
+        </div>
+      </div>
+      <div class="docs-tech-item">
+        <div class="docs-tech-bullet" aria-hidden="true"></div>
+        <div class="docs-tech-content">
+          <div class="docs-tech-name">Auth · Supabase Auth</div>
+          <div class="docs-tech-desc">Used only for encrypted cloud backup if the user explicitly opts in. App is anonymous by default.</div>
+        </div>
+      </div>
+      <div class="docs-tech-item">
+        <div class="docs-tech-bullet" aria-hidden="true"></div>
+        <div class="docs-tech-content">
+          <div class="docs-tech-name">PDF · PDF.js (bundled)</div>
+          <div class="docs-tech-desc">Open-source viewer. Toolkit PDF bundled with the app for full offline access.</div>
+        </div>
+      </div>
+      <div class="docs-tech-item">
+        <div class="docs-tech-bullet" aria-hidden="true"></div>
+        <div class="docs-tech-content">
+          <div class="docs-tech-name">Export · Client-side CSV/Excel</div>
+          <div class="docs-tech-desc">Generated in the browser. No server, no API. User keeps full control of the file.</div>
+        </div>
+      </div>
+      <div class="docs-tech-item">
+        <div class="docs-tech-bullet" aria-hidden="true"></div>
+        <div class="docs-tech-content">
+          <div class="docs-tech-name">Hosting · Vercel / static</div>
+          <div class="docs-tech-desc">Fast, cost-effective hosting for the PWA. This documentation site lives on GitHub Pages.</div>
+        </div>
+      </div>
+      <div class="docs-tech-item">
+        <div class="docs-tech-bullet" aria-hidden="true"></div>
+        <div class="docs-tech-content">
+          <div class="docs-tech-name">Mobile · PWA install</div>
+          <div class="docs-tech-desc">Cross-platform (iOS, Android, desktop). One codebase, no app store gatekeeping for the MVP.</div>
+        </div>
+      </div>
+      <div class="docs-tech-item">
+        <div class="docs-tech-bullet" aria-hidden="true"></div>
+        <div class="docs-tech-content">
+          <div class="docs-tech-name">Privacy · Local-first</div>
+          <div class="docs-tech-desc">All data on-device. No external analytics. No tracking. User can wipe everything in one tap.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 05 — TEAM ===== -->
+  <section id="team" aria-labelledby="team-title">
+    <div class="docs-eyebrow">05 — Team</div>
+    <h2 class="docs-section-title" id="team-title">Project Team</h2>
+    <p class="docs-section-sub">
+      A small, cross-disciplinary team spanning psychology, computing, and design. The toolkit
+      is authored by an MSc Psychology student; the technical lead oversees the engineering work.
+    </p>
+
+    <div class="docs-team-grid">
+
+      <article class="docs-team-card">
+        <div class="docs-team-avatar-row">
+          <div class="docs-team-avatar" aria-hidden="true">AA</div>
+          <div class="docs-team-info">
+            <div class="docs-team-name">Aamir Abbas</div>
+            <div class="docs-team-role">Project Lead</div>
+          </div>
+        </div>
+        <p class="docs-team-desc">Project lead and supervisor. Oversees direction, funding, and the Jenkinson Award delivery.</p>
+      </article>
+
+      <article class="docs-team-card">
+        <div class="docs-team-avatar-row">
+          <div class="docs-team-avatar docs-team-avatar--accent" aria-hidden="true">AG</div>
+          <div class="docs-team-info">
+            <div class="docs-team-name">Anchal Garg</div>
+            <div class="docs-team-role">Project Coordinator</div>
+          </div>
+        </div>
+        <p class="docs-team-desc">Co-applicant on the Jenkinson bid. Provides computing support and project coordination.</p>
+      </article>
+
+      <article class="docs-team-card">
+        <div class="docs-team-avatar-row">
+          <div class="docs-team-avatar docs-team-avatar--secondary" aria-hidden="true">KH</div>
+          <div class="docs-team-info">
+            <div class="docs-team-name">Kimberley Hajee</div>
+            <div class="docs-team-role">Toolkit Author</div>
+          </div>
+        </div>
+        <p class="docs-team-desc">MSc Psychology student. Author of the 120-page CPTSD Toolkit that the app is built on.</p>
+      </article>
+
+      <article class="docs-team-card">
+        <div class="docs-team-avatar-row">
+          <div class="docs-team-avatar docs-team-avatar--info" aria-hidden="true">SB</div>
+          <div class="docs-team-info">
+            <div class="docs-team-name">Sue Brown</div>
+            <div class="docs-team-role">AI &amp; Art Integration</div>
+          </div>
+        </div>
+        <p class="docs-team-desc">Variable Hours Tutor-AAC. Collaborates on AI-and-art integration for the project.</p>
+      </article>
+
+      <article class="docs-team-card">
+        <div class="docs-team-avatar-row">
+          <div class="docs-team-avatar" aria-hidden="true">JC</div>
+          <div class="docs-team-info">
+            <div class="docs-team-name">Jerome Carson</div>
+            <div class="docs-team-role">Professor of Psychology</div>
+          </div>
+        </div>
+        <p class="docs-team-desc">Project supervision on the psychology side. Provides academic oversight and clinical perspective.</p>
+      </article>
+
+      <article class="docs-team-card">
+        <div class="docs-team-avatar-row">
+          <div class="docs-team-avatar docs-team-avatar--faint" aria-hidden="true">KB</div>
+          <div class="docs-team-info">
+            <div class="docs-team-name">Kashif Butt</div>
+            <div class="docs-team-role">Former Developer</div>
+          </div>
+        </div>
+        <p class="docs-team-desc">Stepped down 13 Jun 2026. Designed the original Figma screens and initial workflow. Assets handed over on GitHub.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="docs-footer">
+    <div class="docs-footer-mark">
+      <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <rect width="28" height="28" rx="7" fill="var(--color-primary)"/>
+        <path d="M14 6v2M14 20v2M10 14H7M21 14h-3" stroke="#F4F1EB" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M14 8a6 6 0 0 1 6 6c0 2.5-1.5 4.7-3.8 5.7L14 22l-2.2-2.3A6 6 0 0 1 8 14a6 6 0 0 1 6-6z" stroke="#F4F1EB" stroke-width="1.4" fill="none"/>
+        <circle cx="14" cy="14" r="2" fill="#F4F1EB"/>
+      </svg>
+      CalmAnchor
+    </div>
+    <div>
+      A single-user digital companion for CPTSD self-management.
+    </div>
+    <div style="margin-top: var(--sp-4);">
+      University of Greater Manchester
+      <span class="docs-footer-divider">·</span>
+      Funded by Jenkinson Award JA27017
+      <span class="docs-footer-divider">·</span>
+      Cost code CAB-J-1-2612
+    </div>
+    <div style="margin-top: var(--sp-2); opacity: 0.75;">
+      Built with the CalmAnchor trauma-informed design system. UK English.
+    </div>
+  </footer>
+
+</main>
+
+<!-- Theme toggle script (lightweight, hand-edited) -->
+<script src="design-system/calm-anchor-design-system.js"></script>
+
+</body>
+</html>
