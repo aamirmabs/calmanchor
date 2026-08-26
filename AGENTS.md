@@ -24,6 +24,34 @@ The source material is the **Bella & Wolf CPTSD Toolkit** — a 118-page peer-cr
 | **Jerome Carson** | Professor of Psychology — project supervision |
 | **Anchal Garg** | Co-applicant on Jenkinson bid, computing support |
 | **Kashif Butt** | Former developer — stepped down 13 Jun 2026. Designed Figma screens and initial workflow. Assets handed over on GitHub. |
+| **Amirreza Tavassoli** | Mobile Developer Intern (24 Aug - 20 Sep 2026, milestone-based). Works on a FORK: https://github.com/amirtavass/calmanchor — raises PRs to this repo for approval |
+
+## Git remotes & review workflow (set up 25 Aug 2026)
+
+This local repo tracks TWO remotes:
+- `origin` = https://github.com/aamirmabs/calmanchor (Aamir's repo — documentation home, PR merge target)
+- `amirreza` = https://github.com/amirtavass/calmanchor (intern's fork — read-only tracking for progress)
+
+Keep tabs on the intern's progress:
+```bash
+git fetch amirreza                     # pull latest from the fork
+git log amirreza/feature/m1-scaffold --oneline -10   # recent commits
+git diff origin/main...amirreza/feature/m1-scaffold --stat   # what changed
+git diff origin/main...amirreza/feature/m1-scaffold -- <file> # inspect a file
+```
+
+Review his PR on GitHub: https://github.com/aamirmabs/calmanchor/pulls
+
+To build/run his work locally without disturbing this working tree:
+```bash
+git worktree add ../calmanchor-m1 amirreza/feature/m1-scaffold
+```
+
+Documentation lives on `main` and pushes to `origin` (Aamir's repo) — the fork is never pushed to from here.
+
+**Open items (25 Aug):**
+- PR #1 (feature/m1-scaffold) under review — Expo scaffold, theme tokens, Supabase lib, seed service, PROGRESS.md
+- FLAG: PR includes assets/toolkit_compressed.pdf in the public repo — agreed to move the workbook to private Supabase storage later (licence + clinical-content exposure)
 
 ## Funding
 
