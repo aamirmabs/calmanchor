@@ -4,7 +4,7 @@ The requirements contract for the Calm Anchor app. Each story carries acceptance
 
 Legend for status register: UNTESTED / PASS / FAIL / FIXED / BLOCKED.
 
-Briefing status: stories are marked [BRIEFED] or [NOT YET BRIEFED]. BRIEFED = discussed with the student in supervision (see the Zoom meeting summaries). NOT YET BRIEFED = decided by the project lead but not yet discussed with the student - the student should raise these at supervision for context. The agent must present NOT YET BRIEFED stories as requirements to be understood, never as already-agreed items.
+Briefing status: stories are marked [BRIEFED] or [NOT YET BRIEFED]. BRIEFED = the topic was discussed with the student in supervision. NOT YET BRIEFED = decided by the project lead but not yet discussed with the student - the student should raise these at supervision for context. The markers are the source of truth; the supervision summaries themselves are private to the project lead and are NOT available to this agent - do not attempt to locate them. Present NOT YET BRIEFED stories as requirements to be understood, never as already-agreed items.
 
 ---
 
