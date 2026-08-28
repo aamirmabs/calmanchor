@@ -30,8 +30,8 @@ The source material is the **Bella & Wolf CPTSD Toolkit** — a 118-page peer-cr
 - **Jenkinson Award JA27017** — £10,000
 - **Cost code:** CAB-J-1-2612 (subjective code TBC)
 - **Period:** Aug 2026 — Jul 2027
-- **3 Ryley Student Internships** approved
-- **Spend authority:** research_projects@greatermanchester.ac.uk
+- **3 Ryley Student Internships** approved (Ryley Awards support the student internships; the Jenkinson bid sponsors the project)
+- **Finance contacts (per Sam Johnson email, 25 Aug 2026):** queries on accessing or allocating funds from research awards go to Dr Tayo George (Research Systems & Projects Officer, T.George@greatermanchester.ac.uk) and Bilkis Yusuf (Clerical Officer, B.Yusof@greatermanchester.ac.uk), Research and Doctoral College. This follows a temporary staffing shortage in the R&DC during late 25/26.
 - **Lead school:** School of Arts & Creative Technologies / Computing
 - **OpenCode Go** subscription ($10/month) — usage limits per model (see oh-my-openagent config)
 
