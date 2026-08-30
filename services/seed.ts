@@ -3,8 +3,12 @@ import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Server-only script: use the service_role key so it bypasses RLS when writing to
+// public-read content tables (ADR-002). Never ship this key to the client.
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: { autoRefreshToken: false, persistSession: false },
+});
 
 // ============================================================
 // 1. CHAPTERS – page anchors only (20 chapters)
@@ -154,15 +158,14 @@ const chaptersData = [
 
 // ============================================================
 // 2. EXERCISES – only from pages 23–34 and 99–113
-//    Six categories (workbook 'Regulation Through …' headings):
-//    body, breath, voice, mind, senses, somatic
+//    Six categories (contract S08): breathing, somatic, sensory, voice, mindful, crisis
 // ============================================================
 const exercisesData = [
   // ---- Pages 23–34 (Self-Soothing) ----
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "body",
-    category: "body",
+    category: "somatic",
     title: "Hand on Chest & Slow Breath",
     steps: [
       "Place your hand on your heart",
@@ -175,7 +178,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "breath",
-    category: "breath",
+    category: "breathing",
     title: "Gentle Inhale & Exhale",
     steps: [
       "Breathe naturally, noticing the in-and-out rhythm without holding or forcing",
@@ -186,7 +189,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "breath",
-    category: "breath",
+    category: "breathing",
     title: "Counting on the Outbreath",
     steps: [
       "Exhale gently while silently counting to 3 or 4",
@@ -198,7 +201,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "breath",
-    category: "breath",
+    category: "breathing",
     title: "Breath & Movement Combo",
     steps: [
       "Raise your arms slowly as you inhale",
@@ -255,7 +258,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "ground",
-    category: "senses",
+    category: "sensory",
     title: "5-4-3-2-1 Grounding",
     steps: [
       "Find 5 things you can see",
@@ -269,7 +272,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "body",
-    category: "body",
+    category: "somatic",
     title: "Tapping / EFT",
     steps: [
       "Gently tap on acupressure points (side of hand, eyebrow, under the eye)",
@@ -280,7 +283,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "body",
-    category: "body",
+    category: "somatic",
     title: "Rocking or Swaying",
     steps: [
       "Gently rock side to side or forward/backward",
@@ -291,7 +294,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "body",
-    category: "body",
+    category: "somatic",
     title: "Stretching or Yoga (Cat-Cow / Child's Pose)",
     steps: [
       "Cat-Cow: move the spine with the breath, connecting movement to inhale and exhale",
@@ -388,7 +391,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "senses",
-    category: "senses",
+    category: "sensory",
     title: "Smell Something Grounding",
     steps: [
       "Choose a calming scent (lavender, citrus, pine)",
@@ -399,7 +402,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "senses",
-    category: "senses",
+    category: "sensory",
     title: "Cold Water Immersion",
     steps: [
       "Splash cold water on your face",
@@ -411,7 +414,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "senses",
-    category: "senses",
+    category: "sensory",
     title: "Weighted Blanket",
     steps: [
       "Deep pressure stimulation can lower heart rate and cortisol levels",
@@ -422,7 +425,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "senses",
-    category: "senses",
+    category: "sensory",
     title: "Nature Sounds, Brown Noise, or Familiar Low TV",
     steps: [
       "Use consistent, calming background noise to reduce sensory overwhelm",
@@ -433,7 +436,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "senses",
-    category: "senses",
+    category: "sensory",
     title: "Mindful Body Scan",
     steps: [
       "Notice each part of your body in turn, from toes to head, without judgement",
@@ -445,7 +448,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "senses",
-    category: "senses",
+    category: "sensory",
     title: "Tactile Objects",
     steps: [
       "A fidget toy or textured material helps focus attention on the senses",
@@ -456,7 +459,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "mind",
-    category: "mind",
+    category: "mindful",
     title: "What's True Right Now?",
     steps: [
       "Use this when thoughts spiral",
@@ -468,7 +471,7 @@ const exercisesData = [
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "journal",
-    category: "mind",
+    category: "mindful",
     title: "Gentle Journaling: \"What Does This Part of Me Need?\"",
     steps: [
       "Instead of trying to silence discomfort, get curious",
@@ -481,7 +484,7 @@ const exercisesData = [
   {
     chapter_title: "Making Safety Real / Safe Space",
     exercise_type: "senses",
-    category: "senses",
+    category: "sensory",
     title: "How to Build a Safe Space",
     steps: [
       "Design a real, imagined, or in-between space that feels grounded, soothed, and in control",
@@ -493,8 +496,8 @@ const exercisesData = [
   },
   {
     chapter_title: "Tools for the Bad Days",
-    exercise_type: "breath",
-    category: "breath",
+    exercise_type: "crisis",
+    category: "crisis",
     title: "Box Breathing (4-4-4-4)",
     steps: [
       "Inhale for 4 seconds",
@@ -507,8 +510,8 @@ const exercisesData = [
   },
   {
     chapter_title: "Tools for the Bad Days",
-    exercise_type: "breath",
-    category: "breath",
+    exercise_type: "crisis",
+    category: "crisis",
     title: 'The "Factory Reset"',
     steps: [
       "Inhale deeply through the nose until lungs feel full",
@@ -521,8 +524,8 @@ const exercisesData = [
   },
   {
     chapter_title: "Tools for the Bad Days",
-    exercise_type: "senses",
-    category: "senses",
+    exercise_type: "crisis",
+    category: "crisis",
     title: "Emergency Care Package",
     steps: [
       "Create a basket with items for visual, auditory, tactile, smell, taste, and cognitive regulation",
@@ -532,8 +535,8 @@ const exercisesData = [
   },
   {
     chapter_title: "Tools for the Bad Days",
-    exercise_type: "somatic",
-    category: "somatic",
+    exercise_type: "crisis",
+    category: "crisis",
     title: "The Balloon Release",
     steps: [
       "Picture your thought as a balloon",
@@ -546,8 +549,8 @@ const exercisesData = [
   },
   {
     chapter_title: "Tools for the Bad Days",
-    exercise_type: "selfkind",
-    category: "mind",
+    exercise_type: "crisis",
+    category: "crisis",
     title: "What Would I Say To A Friend?",
     steps: [
       "When you are being hard on yourself, pause",
@@ -559,7 +562,7 @@ const exercisesData = [
   {
     chapter_title: "Tools for the Bad Days",
     exercise_type: "crisis",
-    category: "mind",
+    category: "crisis",
     title: "The Distress Tolerance Jar",
     steps: [
       "Fill a jar with coping ideas on slips of paper",
@@ -570,8 +573,8 @@ const exercisesData = [
   },
   {
     chapter_title: "Tools for the Bad Days",
-    exercise_type: "somatic",
-    category: "mind",
+    exercise_type: "crisis",
+    category: "crisis",
     title: "Safe Place Visualisation",
     steps: [
       "Close your eyes and imagine a place where you feel completely safe",
@@ -605,7 +608,16 @@ const journalPromptsData = [
 ];
 
 // ============================================================
-// 4. SEED FUNCTION – clears and re-inserts
+// 4. SYSTEM TAGS (user_id null = shared; S16/S20 query expects these)
+// ============================================================
+const systemTagsData = [
+  { name: "grounding" },
+  { name: "anxious" },
+  { name: "mood" }, // D03: "mood" survives only as a journal tag
+];
+
+// ============================================================
+// 5. SEED FUNCTION – clears and re-inserts
 // ============================================================
 async function seed() {
   console.log("🌱 Seeding Calm Anchor (revised plan)...");
@@ -624,6 +636,10 @@ async function seed() {
     .delete()
     .neq("id", "00000000-0000-0000-0000-000000000000");
   // checklist_items and checklist_progress are left untouched (empty by default)
+  await supabase
+    .from("tags")
+    .delete()
+    .is("user_id", null);
 
   // ---- Insert chapters ----
   const { data: chapters, error: chaptersError } = await supabase
@@ -677,6 +693,17 @@ async function seed() {
     throw promptsError;
   }
   console.log(`✅ Inserted ${promptsToInsert.length} journal prompts`);
+
+  // ---- Insert system tags (user_id null — shared) ----
+  const { error: tagsError } = await supabase
+    .from("tags")
+    .insert(systemTagsData);
+
+  if (tagsError) {
+    console.error("❌ Failed to insert system tags:", tagsError.message);
+    throw tagsError;
+  }
+  console.log(`✅ Inserted ${systemTagsData.length} system tags`);
 
   console.log("🎉 Seeding complete!");
 }

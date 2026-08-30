@@ -2,6 +2,73 @@
 
 Append-only record of changes (decisions + progress). Newest first. Never edit or delete a past entry.
 
+## 2026-08-30 — Query-pack compliance pass (schema + seed corrections)
+
+### Progress — hard-fail fixes (S05, S29)
+- **S05 (delete my data):** every user-data FK now `on delete cascade` (checkins, journal_entries,
+  exercise_sessions, checklist_progress, crisis_plan, settings, tags, junction tables) so delete-user
+  cascades cleanly and no orphans remain.
+- **S29 (offline-ready timestamps):** `created_at` + `updated_at` added to every user-data table —
+  `exercise_sessions` (both, previously neither), `checkins` (+updated_at), `checklist_progress`
+  (+created_at), `settings` (+created_at), `tags` (+updated_at). `journal_entries`, `profiles`,
+  `crisis_plan` already had both.
+
+### Progress — S11 crisis filter (decision: satisfy both filters)
+- All 7 "Tools for the Bad Days" exercises now have **`exercise_type = 'crisis'`** AND
+  **`category = 'crisis'`**. This satisfies S11's `WHERE exercise_type = 'crisis'` query *and* S08's
+  `GROUP BY category` grouping — same set, both filters work, no separate crisis table/feature.
+- Also fixed: "The Balloon Release" was mis-categorised `somatic` — it's a bad-days exercise, now
+  `category = 'crisis'`.
+
+### Progress — system tags (S16/S20)
+- `services/seed.ts` now seeds system tags (`user_id` null): **grounding, anxious, mood** (D03 keeps
+  "mood" only as a journal tag). Satisfies the INSERT…SELECT queries that attach `name = 'grounding'`/
+  `'anxious'` system tags.
+
+### Fix — RLS hole (S16)
+- `tags` write policy tightened: `for insert with check (auth.uid() = user_id)` only — lets users create
+  only *their* private tags, not global (system) tags. System tags are seeded via the service role
+  (bypasses RLS).
+
+### Fix — `documents` drop statement
+- Added `drop table if exists documents cascade;` so the script re-runs cleanly.
+
+### Progress — CHECK constraints (prevent test friction, recommended)
+- `exercises.category` CHECK in the 6 contract names; `distress_before`/`distress_after`/`helpfulness`
+  CHECK 0–10.
+
+### Notes (accepted, not breaking — for the record)
+- **5-4-3-2-1 Grounding** lives under "Mind" on workbook p.26 but is seeded `sensory` — acceptable
+  contract mapping, noted. Its exercise is otherwise identical.
+- **Chapter page ranges** in the seed differ from the workbook's own contents page for some chapters
+  (e.g. Ch2 9–12 vs 8–14). Count (20) is right; mapping differs. Open item for Aamir — see
+  `07-questions-for-aamir.md`.
+
+## 2026-08-30 — RLS decision + contract alignment (ADR-003)
+
+### Decision — RLS on all tables, difference in the policy (`docs/decisions/ADR-003-rls-strategy.md`)
+- **Accepted (Amirreza, 2026-08-30):** `row level security` is enabled on **every** table. Content tables
+  get a public-read policy (`for select using (true)`); user-data tables get own-rows-only
+  (`auth.uid() = user_id`); `users` own-rows; `tags` public-read for system tags + owner for user tags;
+  junction tables resolve owner via the parent row.
+- Resolves the project lead's concern about "some tables RLS, some not" — the split lives in the policy,
+  not in whether RLS is on.
+
+### Decision — `users` table + service-role seed (sub-points of ADR-003)
+- A `public.users` table mirrors `auth.users` (`id` PK→FK, `email`, `display_name`, `google_identity`
+  unique, no password columns). All user-data FKs now reference `users(id)`. A `handle_new_user` trigger
+  auto-creates the row on signup + one-time backfill. Satisfies S02/S27's `FROM users` queries and fixes
+  the earlier split-brain (some FKs pointed at `auth.users`, some at a would-be parallel table).
+- `services/seed.ts` now uses `SUPABASE_SERVICE_ROLE_KEY` (server-only, bypasses RLS) so content inserts
+  still work under strict RLS. `lib/supabase.ts` unchanged (anon key for the client).
+
+### Progress — exercise categories aligned to contract (S08)
+- Renamed the seed's categories to the contract set: `body→somatic`, `breath→breathing`,
+  `senses→sensory`, `mind→mindful`, and "Tools for the Bad Days" exercises → `crisis`.
+- Final distribution (verified from file): `breathing=3, somatic=12, sensory=8, voice=4, mindful=2, crisis=6`
+  = **35 exercises**, 6 distinct contract categories, no leftover old names. `npx tsc --noEmit` passes.
+- Seed **not yet run** against Supabase (by user) — waiting on `SUPABASE_SERVICE_ROLE_KEY` in `.env`.
+
 ## 2026-08-30 — Schema alignment & seed corrections
 
 ### Decision — toolkit read source (`docs/decisions/ADR-001-toolkit-source.md`)
