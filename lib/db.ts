@@ -4,18 +4,9 @@ import { getCurrentUserId } from "./auth";
 // ============================================================
 // TYPES
 // ============================================================
-export interface MoodLogInput {
-  phase?: string;
-  exercise_id?: string | null;
-  score?: number;
-  note?: string;
-}
-
 export interface JournalEntryInput {
-  chapter_id?: string | null;
   prompt_id?: string | null;
   body: string;
-  mood_after?: number;
 }
 
 export interface CheckinInput {
@@ -30,26 +21,22 @@ export interface SessionInput {
   started_at?: Date;
   ended_at?: Date | null;
   duration_minutes?: number;
-  mood_before?: number;
-  mood_after?: number;
-  notes?: string;
+  distress_before?: number;
+  distress_after?: number;
+  helpfulness?: number;
+  note?: string;
 }
 
-// ============================================================
-// MOOD LOGS
-// ============================================================
-export async function saveMoodLog(entry: MoodLogInput) {
-  const { error } = await supabase.from("mood_logs").insert(entry);
-  if (error) throw error;
+export interface ProfileInput {
+  age_band?: string;
+  gender?: string;
+  ethnicity?: string;
+  treatment_status?: string;
+  referral_source?: string;
 }
 
-export async function getMoodLogs() {
-  const { data, error } = await supabase
-    .from("mood_logs")
-    .select("*")
-    .order("created_at", { ascending: false });
-  if (error) throw error;
-  return data;
+export interface TagInput {
+  name: string;
 }
 
 // ============================================================
@@ -63,7 +50,7 @@ export async function saveJournalEntry(entry: JournalEntryInput) {
 export async function getJournalEntries() {
   const { data, error } = await supabase
     .from("journal_entries")
-    .select("*, chapters(title), journal_prompts(prompt_text)")
+    .select("*, prompts(prompt_text)")
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data;
@@ -87,18 +74,64 @@ export async function getCheckins() {
 }
 
 // ============================================================
-// SESSIONS
+// EXERCISE SESSIONS
 // ============================================================
 export async function saveSession(entry: SessionInput) {
-  const { error } = await supabase.from("sessions").insert(entry);
+  const { error } = await supabase.from("exercise_sessions").insert(entry);
   if (error) throw error;
 }
 
 export async function getSessions() {
   const { data, error } = await supabase
-    .from("sessions")
+    .from("exercise_sessions")
     .select("*, exercises(title, category)")
     .order("started_at", { ascending: false });
+  if (error) throw error;
+  return data;
+}
+
+// ============================================================
+// PROFILE (research fields — separately stored, never identity)
+// ============================================================
+export async function getCurrentProfile() {
+  const userId = await getCurrentUserId();
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id, age_band, gender, ethnicity, treatment_status, referral_source")
+    .eq("user_id", userId)
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function saveProfile(entry: ProfileInput) {
+  const userId = await getCurrentUserId();
+  const { error } = await supabase
+    .from("profiles")
+    .upsert({ user_id: userId, ...entry }, { onConflict: "user_id" });
+  if (error) throw error;
+}
+
+// ============================================================
+// TAGS (system tags shared; user tags are private)
+// ============================================================
+export async function getSystemTags() {
+  const { data, error } = await supabase
+    .from("tags")
+    .select("*")
+    .is("user_id", null)
+    .order("name");
+  if (error) throw error;
+  return data;
+}
+
+export async function createUserTag(entry: TagInput) {
+  const userId = await getCurrentUserId();
+  const { data, error } = await supabase
+    .from("tags")
+    .insert({ user_id: userId, name: entry.name })
+    .select()
+    .single();
   if (error) throw error;
   return data;
 }

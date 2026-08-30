@@ -154,14 +154,15 @@ const chaptersData = [
 
 // ============================================================
 // 2. EXERCISES – only from pages 23–34 and 99–113
-//    Each has a category: body, breath, voice, mind, senses, somatic
+//    Six categories (workbook 'Regulation Through …' headings):
+//    body, breath, voice, mind, senses, somatic
 // ============================================================
 const exercisesData = [
   // ---- Pages 23–34 (Self-Soothing) ----
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
-    exercise_type: "breath",
-    category: "breath",
+    exercise_type: "body",
+    category: "body",
     title: "Hand on Chest & Slow Breath",
     steps: [
       "Place your hand on your heart",
@@ -267,8 +268,8 @@ const exercisesData = [
   },
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
-    exercise_type: "somatic",
-    category: "somatic",
+    exercise_type: "body",
+    category: "body",
     title: "Tapping / EFT",
     steps: [
       "Gently tap on acupressure points (side of hand, eyebrow, under the eye)",
@@ -278,12 +279,24 @@ const exercisesData = [
   },
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
-    exercise_type: "somatic",
-    category: "somatic",
+    exercise_type: "body",
+    category: "body",
     title: "Rocking or Swaying",
     steps: [
       "Gently rock side to side or forward/backward",
       "Mimics the motion babies associate with safety and comfort",
+    ],
+    duration_minutes: null,
+  },
+  {
+    chapter_title: "Self-Soothing Strategies That Actually Work",
+    exercise_type: "body",
+    category: "body",
+    title: "Stretching or Yoga (Cat-Cow / Child's Pose)",
+    steps: [
+      "Cat-Cow: move the spine with the breath, connecting movement to inhale and exhale",
+      "Child's Pose: ground the body and create a sense of protection",
+      "These gentle movements help release physical tension",
     ],
     duration_minutes: null,
   },
@@ -362,6 +375,18 @@ const exercisesData = [
   },
   {
     chapter_title: "Self-Soothing Strategies That Actually Work",
+    exercise_type: "somatic",
+    category: "somatic",
+    title: "Grounding Through Contact",
+    steps: [
+      "Sit with your feet flat on the floor and press them gently down",
+      "Feel the support of the floor, your chair, and the space around you",
+      "Say aloud: \"I feel the ground under me. I'm supported.\"",
+    ],
+    duration_minutes: null,
+  },
+  {
+    chapter_title: "Self-Soothing Strategies That Actually Work",
     exercise_type: "senses",
     category: "senses",
     title: "Smell Something Grounding",
@@ -383,7 +408,89 @@ const exercisesData = [
     ],
     duration_minutes: null,
   },
+  {
+    chapter_title: "Self-Soothing Strategies That Actually Work",
+    exercise_type: "senses",
+    category: "senses",
+    title: "Weighted Blanket",
+    steps: [
+      "Deep pressure stimulation can lower heart rate and cortisol levels",
+      "Use during rest or when trying to down-regulate from stress or shutdown",
+    ],
+    duration_minutes: null,
+  },
+  {
+    chapter_title: "Self-Soothing Strategies That Actually Work",
+    exercise_type: "senses",
+    category: "senses",
+    title: "Nature Sounds, Brown Noise, or Familiar Low TV",
+    steps: [
+      "Use consistent, calming background noise to reduce sensory overwhelm",
+      "Signals safety to the nervous system, especially when scattered or overstimulated",
+    ],
+    duration_minutes: null,
+  },
+  {
+    chapter_title: "Self-Soothing Strategies That Actually Work",
+    exercise_type: "senses",
+    category: "senses",
+    title: "Mindful Body Scan",
+    steps: [
+      "Notice each part of your body in turn, from toes to head, without judgement",
+      "Pay attention to sensations, tension, or comfort",
+      "This quiet awareness grounds your nervous system",
+    ],
+    duration_minutes: null,
+  },
+  {
+    chapter_title: "Self-Soothing Strategies That Actually Work",
+    exercise_type: "senses",
+    category: "senses",
+    title: "Tactile Objects",
+    steps: [
+      "A fidget toy or textured material helps focus attention on the senses",
+      "Grounds the body in the present and distracts from dysregulation",
+    ],
+    duration_minutes: null,
+  },
+  {
+    chapter_title: "Self-Soothing Strategies That Actually Work",
+    exercise_type: "mind",
+    category: "mind",
+    title: "What's True Right Now?",
+    steps: [
+      "Use this when thoughts spiral",
+      "Ask yourself: what is true in this moment?",
+      "Anchor in observable facts, e.g. \"I am safe in this room\", \"I have options\"",
+    ],
+    duration_minutes: null,
+  },
+  {
+    chapter_title: "Self-Soothing Strategies That Actually Work",
+    exercise_type: "journal",
+    category: "mind",
+    title: "Gentle Journaling: \"What Does This Part of Me Need?\"",
+    steps: [
+      "Instead of trying to silence discomfort, get curious",
+      "Write to or from the part of you that feels afraid, angry, or sad",
+      "You might discover needs you hadn't realised were present",
+    ],
+    duration_minutes: null,
+  },
   // ---- Pages 99–113 (Tools for the Bad Days) ----
+  {
+    chapter_title: "Making Safety Real / Safe Space",
+    exercise_type: "senses",
+    category: "senses",
+    title: "How to Build a Safe Space",
+    steps: [
+      "Design a real, imagined, or in-between space that feels grounded, soothed, and in control",
+      "Visual: what do you see (light, colours, natural elements, familiar objects)?",
+      "Touch/sound/scent/taste: pick textures, sounds, scents and tastes that calm you",
+      "Emotional tone/body sense: how do you feel here; how does your body respond?",
+    ],
+    duration_minutes: null,
+  },
   {
     chapter_title: "Tools for the Bad Days",
     exercise_type: "breath",
@@ -505,7 +612,7 @@ async function seed() {
 
   // ---- Clear existing data (preserve tables but empty them) ----
   await supabase
-    .from("journal_prompts")
+    .from("prompts")
     .delete()
     .neq("id", "00000000-0000-0000-0000-000000000000");
   await supabase
@@ -562,7 +669,7 @@ async function seed() {
   }));
 
   const { error: promptsError } = await supabase
-    .from("journal_prompts")
+    .from("prompts")
     .insert(promptsToInsert);
 
   if (promptsError) {

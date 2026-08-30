@@ -34,6 +34,10 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# workbook PDF (ADR-001: never commit the clinical PDF to the repo)
+*.pdf
+/assets/toolkit_compressed.pdf
+
 # generated native folders
 /ios
 /android
