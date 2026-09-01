@@ -226,9 +226,12 @@ async function rlsIsolation() {
   if (la.error || lb.error) {
     record("S04", false, `sign-in failed -> ${la.error?.message ?? lb.error?.message}`);
   } else {
-    // Insert a checkin as A and B
-    await asA.from("checkins").insert({ ns_state: "regulated", note: "a" });
-    await asB.from("checkins").insert({ ns_state: "dysregulated", note: "b" });
+    // Insert a checkin as A and B (capture errors — a policy bug surfaces here as an RLS violation)
+    const insA = await asA.from("checkins").insert({ ns_state: "regulated", note: "a" });
+    const insB = await asB.from("checkins").insert({ ns_state: "dysregulated", note: "b" });
+    if (insA.error) console.log("  [diag] A insert error:", insA.error.message);
+    if (insB.error) console.log("  [diag] B insert error:", insB.error.message);
+
     const { count: aCount } = (await asA.from("checkins").select("*", { count: "exact", head: true })) as { count: number | null };
     // A should see only A's rows (count 1 of the 2, and 0 for b's)
     const { data: aRows, error: aErr } = await asA.from("checkins").select("note").eq("note", "b");

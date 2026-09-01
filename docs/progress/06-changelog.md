@@ -2,6 +2,20 @@
 
 Append-only record of changes (decisions + progress). Newest first. Never edit or delete a past entry.
 
+## 2026-08-30 — M1 completion: seed + RLS fix + full schema verification
+
+- **Seed ran** against live Supabase (service role): **20 chapters / 35 exercises / 3 prompts / 3 system tags**. Confirmed.
+- **RLS isolation (S04) fixed** — root cause was a stale `checkins` INSERT policy in the live DB rejecting
+  owner inserts. Rewrote `supabase/rls.sql` as **idempotent per-operation policies** (`drop policy if
+  exists` + explicit select/insert/update/delete per user-data table) and re-applied in the SQL editor.
+  Now `npm run verify:rls` → **S04 PASS, S05 PASS**.
+- **Full verification: 22 checks, 22 PASS** (`npm run verify:rls`). Recorded in
+  `docs/schema-coaching/03-schema-status.md`. S26/S27/S29 + sequence stories remain UNTESTED (need
+  `SUPABASE_DB_URL` for Engine B introspection).
+- `services/verify-schema.ts` kept its insert-error capturing (useful for RLS debugging); `_diag.ts` removed.
+- **Milestone 1 (architecture) deliverable effectively complete** once the above is committed — nav shell
+  (M1-13) and Crisis FAB (M1-14) are deferred to M2 per the scope-doc dependency ordering (Aamir's call).
+
 ## 2026-08-30 — Schema verifier + live results
 
 - **New `services/verify-schema.ts`** — runs the `docs/schema-coaching/02-query-pack.md` checks against

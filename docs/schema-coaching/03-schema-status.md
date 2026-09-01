@@ -78,6 +78,24 @@ Ran `services/verify-schema.ts` (Engine A) against live Supabase. 20 checks, 20 
 | 2026-08-30 | S29 | UNTESTED | timestamps on all user-data tables — Engine B only. |
 | 2026-08-30 | S10/S12/S13/S17/S18/S21/S22/S24 | UNTESTED | remaining; cover sequence constraints, session lifecycle, edit window, per-day limits — mostly static/Engine B.
 
+## Session 2026-08-30 (2) — RLS fixed; S04/S05 now PASS
+
+Root cause of the earlier S04 failure: a stale `checkins` INSERT policy in the live DB rejected owner
+inserts (`new row violates row-level security policy`), even though schema, `users` row and `auth.uid()`
+were all correct. Fixed by rewriting `supabase/rls.sql` with **idempotent per-operation policies**
+(`drop policy if exists` + explicit `select`/`insert`/`update`/`delete` per user-data table), applied in the
+SQL editor. Verified on the live instance.
+
+| Date | Story | Status | Evidence | Notes |
+|---|---|---|---|---|
+| 2026-08-30 | S04 | PASS | `npm run verify:rls` → user A count=1, rows with note='b' seen by A=0 | two-user isolation now holds |
+| 2026-08-30 | S05 | PASS | cascade delete → orphaned checkins for A=0 | delete-user cascades cleanly |
+| 2026-08-30 | — | PASS | seed re-ran: 20 chapters / 35 exercises / 3 prompts / 3 system tags | unaffected by RLS change |
+| 2026-08-30 | — | PASS | full run: 22 checks, 22 PASS | `npm run verify:rls` |
+
+**Remaining schema-coaching stories still UNTESTED** (need `SUPABASE_DB_URL` for Engine B introspection):
+S26, S27, S29, and the sequence/static stories (S10/S12/S13/S17/S18/S21/S22/S24).
+
 ## Open questions for Aamir
 
 (Anything the agent cannot resolve from the stories, the workbook, or the schema. The student brings these to supervision.)
