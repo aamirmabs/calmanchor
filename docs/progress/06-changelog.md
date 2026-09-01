@@ -2,6 +2,31 @@
 
 Append-only record of changes (decisions + progress). Newest first. Never edit or delete a past entry.
 
+## 2026-08-30 — Schema verifier + live results
+
+- **New `services/verify-schema.ts`** — runs the `docs/schema-coaching/02-query-pack.md` checks against
+  live Supabase. `npm run verify` (Engine A, read-only) and `npm run verify:rls` (adds S04/S05 two-user
+  isolation + cascade test). Engine B (introspection) activates when `SUPABASE_DB_URL` is set.
+- Installed `postgres` (dev) for Engine B.
+- **Live run (Engine A): 20 checks, 20 PASS.** Recorded in `docs/schema-coaching/03-schema-status.md`
+  (S01,S02,S03,S06,S07,S08,S09,S11,S14,S15,S16,S19,S20,S23,S25 PASS; S04/S05 BLOCKED pending `--rls`;
+  S26/S27/S29 + sequence stories UNTESTED, Engine B).
+- Details: chapters=20, exercises=35 (breathing=3,somatic=11,sensory=8,voice=4,mindful=2,crisis=7),
+  prompts=3, system tags=grounding/anxious/mood.
+
+## 2026-08-30 — Dev-build / EAS decision (M1-17 → resolved by M1-18)
+
+- **Decision:** stay on **Expo SDK 57** and use a **dev build via EAS cloud build** (no local Android SDK /
+  Java needed). Recorded in `milestones/m1-project-setup.md` (M1-18) — resolved the M1-17 BLOCKED row.
+- Installed `expo-dev-client@~57.0.16` (SDK 57 kept; pre-existing `react`/`react-dom` peer skew resolved
+  with `--legacy-peer-deps`).
+- Created `eas.json` with `development` (APK, developmentClient), `preview`, `production`.
+- Toolkit PDF wiring landed: public-read `toolkit` bucket + `EXPO_PUBLIC_TOOLKIT_PDF_URL` +
+  `lib/toolkit.ts` seam + `app/toolkit.tsx` (`react-native-pdf`, `source={{uri,cache:true}}`).
+- `.env` gained `SUPABASE_SERVICE_ROLE_KEY` and `EXPO_PUBLIC_TOOLKIT_PDF_URL` (user-only, gitignored).
+- **Pending (interactive, user-only):** `npx eas login` → `npx eas init` (adds `extra.eas.projectId`) →
+  `npx eas build --profile development --platform android` → install APK; then `npx expo start --dev-client`.
+
 ## 2026-08-30 — Query-pack compliance pass (schema + seed corrections)
 
 ### Progress — hard-fail fixes (S05, S29)

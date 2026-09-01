@@ -24,18 +24,24 @@
 | 2026-08-30 | M1-15 | Verify iOS + Android; open draft PR | TODO | — | NOTE: `react-native-pdf`+`react-native-blob-util` are NOT in Expo Go → toolkit screen needs a dev build, not Expo Go. See SDK note below. |
 | 2026-08-30 | M1-16 | Schema saved to `supabase/schema.sql` + `supabase/rls.sql`; syntax fix (`on conflict`); S05 cascade + S29 timestamps + S11 crisis type + S16 system tags | DONE | `supabase/schema.sql`, `supabase/rls.sql`, `services/seed.ts` | Static trace vs query pack: 28/29 SQL stories pass (S04 needs live 2-user run; S28 = git check). Fixed missing `on` in backfill; added `tags_system_name_key` unique partial index. RLS split out (drops wipe policies). |
 | 2026-08-30 | M1-17 | Expo SDK compat (Expo Go "project too new" error) | BLOCKED | `package.json` expo `~57.0.16` | Project = SDK 57; store Expo Go stops at SDK 54. Decision pending — see SDK note below. |
+| 2026-08-30 | M1-18 | Dev-build path chosen (EAS cloud build); install `expo-dev-client` + `eas.json` | IN_PROGRESS | `eas.json`, `package.json` (expo-dev-client ~57.0.16), `app.json` | **Decided:** keep SDK 57 + dev build (not downgrade) so `react-native-pdf` native module works. `expo-dev-client@~57.0.16` installed (peer-dep conflict resolved with `--legacy-peer-deps`). `eas.json` has `development`(APK)/`preview`/`production`. **Blocked on interactive `eas login`/`eas init`** (adds `extra.eas.projectId` to `app.json`) then `eas build --profile development --platform android` → APK. This resolves the M1-17 BLOCKED row. |
+| 2026-08-30 | M1-19 | Schema verifier: `services/verify-schema.ts` + `npm run verify` | DONE | `npm run verify` → 20/20 PASS | Runs the query-pack checks live. `verify:rls` for S04/S05 (2-user isolation, not run). Engine B (introspection) needs `SUPABASE_DB_URL`. Results logged in `docs/schema-coaching/03-schema-status.md`. |
 
 ## Summary
 
-- **DONE:** 8 · **IN_PROGRESS:** 3 · **TODO:** 4 · **BLOCKED:** 1
+- **DONE:** 9 · **IN_PROGRESS:** 4 · **TODO:** 4 · **BLOCKED:** 1
 
-> Migration/seed application (M1-12, needs service-role key) and nav shell (M1-13+) are the remaining M1 blockers.
+> Migration/seed application (M1-12, needs service-role key), nav shell (M1-13+), and the EAS dev-build
+> kickoff (M1-18, needs interactive `eas login`) are the remaining M1 blockers.
 > See `../06-changelog.md` for the schema-alignment details, `../07-questions-for-aamir.md` for open items.
 
-### Expo SDK note (M1-15 / M1-17)
+### Expo SDK note (M1-15 / M1-17 / M1-18)
 
-Project is **Expo SDK 57**. Per Expo's compatibility doc, **store Expo Go stops at SDK 54** — so the store
-Expo Go app cannot open this project ("Project is incompatible with this version of Expo Go").
-Separately, **`react-native-pdf` and `react-native-blob-util` are native modules not bundled in Expo Go**,
-so the toolkit PDF screen needs a **development build** regardless of SDK version. Options recorded for
-decision (downgrade vs. dev build) — DO NOT downgrade without resolving the native-module issue first.
+Project is **Expo SDK 57**. Store **Expo Go stops at SDK 54**, so the store Expo Go app cannot open this
+project. Separately, **`react-native-pdf` and `react-native-blob-util` are native modules not bundled in
+Expo Go**, so the toolkit PDF screen needs a **development build** regardless of SDK version.
+
+**Recorded decision (M1-18):** stay on SDK 57 and use a **dev build via EAS cloud build** (no local
+Android SDK/Java needed). Keep SDK 57; do NOT downgrade (downgrade would not solve the native-module
+requirement). Dev client APK is produced by `eas build --profile development --platform android`, then run
+locally with `npx expo start --dev-client`.
