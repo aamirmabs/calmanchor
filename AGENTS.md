@@ -8,9 +8,9 @@ The source material is the **Bella & Wolf CPTSD Toolkit** — a 118-page peer-cr
 
 ## Core Application Functions
 
-1. **Private Diary** — users log thoughts, reflections, and daily notes. Personal, private, never shared.
+1. **Private Diary** — users log thoughts, reflections, and daily notes. Personal, private, never shared. Plain-text entries, editable until the end of the next calendar day, then locked (S21).
 2. **Educational Content** — interactive guided exercises explaining trauma concepts (nervous system states, survival responses, regulation techniques) with an embedded PDF viewer for the toolkit.
-3. **Toolkit Browser** — browse the full CPTSD toolkit by section, with tracking for completed exercises and mood logging.
+3. **Toolkit Browser** — browse the full CPTSD toolkit by section, with tracking for completed exercises (distress before/after + helpfulness) and optional check-ins. No mood-trend dashboards (S26).
 
 **Important:** This is a single-user, private application. There are NO clinician dashboards, NO data sharing, NO multi-user requirements. The Jenkinson bid originally mentioned clinician-facing features — that assumption was incorrect and has been dropped.
 

@@ -1,8 +1,17 @@
 # Calm Anchor — Development Progress
 
+> **Decision reconciliation (3 Sep 2026):** the sections below were written during M1 and predate the supervision
+> decisions now in force in `docs/schema-coaching/` (stories S01–S29, decision log D01–D15). Where this file
+> conflicts with the user stories or the decision log, the stories and decision log WIN. Key corrections applied
+> below: auth is Google-only (S02/D02 — the M1 silent-anonymous-auth approach is a coached violation being fixed
+> through the schema-coaching loop); no `mood_logs` table (D03/D04 — remove); no mood/trend dashboards (S26/D03);
+> app is Supabase-first, offline/local SQLite deferred (26 Aug); session metrics are SUDS distress + helpfulness
+> (D04); navigation = bottom tabs + persistent floating Crisis button, no hamburger (D14); UI components follow
+> Material Design 3 while design-system tokens stay the style source of truth (D14).
+
 ## Milestone 1: Project Setup & Architecture
 
-**Due: Sun 30 Aug** ·
+**Due: Sun 30 Aug** · **Status (2 Sep): delivered — a couple of screening tasks folded into M2.** Sign-off and 20% payment share pending confirmation (amounts TBC with the research office).
 
 ---
 
@@ -48,7 +57,7 @@
 ### Remaining (M1)
 
 - [ ] Bundle `toolkit.pdf` as `assets/toolkit.pdf`, install `react-native-pdf` + `react-native-blob-util`
-- [ ] Navigation shell — 5 tabs (Toolkit, Diary, Exercises, Portfolio, Dashboard) + persistent Crisis FAB
+- [ ] Navigation shell — sticky bottom tab bar (4–5 tabs: Toolkit, Exercises, Diary, Portfolio/Dashboard) + header avatar + persistent floating Crisis FAB, never buried in a menu (D14)
 - [ ] Crisis FAB with UK contacts (Samaritans 116 123, Shout 85258, NHS 111)
 - [ ] Wrap root layout in `ThemeProvider`
 - [ ] Verify app runs on iOS simulator and Android emulator
@@ -63,9 +72,9 @@
 ### Tasks
 
 - [ ] **Toolkit tab** — PDF viewer with `react-native-pdf`, chapter navigation list from seeded `chapters` table, tap chapter → jump to page
-- [ ] **Diary tab** — display 3 seeded prompts, create/view journal entries, call `saveJournalEntry()` / `getJournalEntries()` from `lib/db.ts`
+- [ ] **Diary tab** — display seeded prompts only if grounded in the workbook's reflection questions (S23; ungrounded prompts to be removed), create/view journal entries (edit window S21, single-entry delete S22), call `saveJournalEntry()` / `getJournalEntries()` from `lib/db.ts`
 - [ ] **Exercises tab** — list exercises grouped by category (breath, voice, senses, somatic, mind), tap exercise → detail screen with steps and duration
-- [ ] **Exercise session flow** — start exercise → timer/step display → pre/post mood log → save session via `saveSession()`
+- [ ] **Exercise session flow** — start exercise → timer/step display → pre/post distress (SUDS 0–10) + helpfulness rating → confirmation/summary screen → save session via `saveSession()` (D04; replaces any pre/post mood log)
 - [ ] **Trigger tracker** — within Diary, log trigger events (timestamp, trigger name, ns_state, survival_response, note)
 - [ ] **Cross-platform QA** — test on both iOS and Android, verify safe areas, keyboard handling, navigation back behavior
 
@@ -77,14 +86,14 @@
 
 ### Tasks
 
-- [ ] **Dashboard (Pattern Dashboard)** — 4 descriptive charts: trigger frequency, response distribution, exercise effectiveness, time-of-day patterns. Source data from `checkins`, `sessions`, `mood_logs` via `lib/db.ts`
-- [ ] **Daily check-in** — home screen card: select ns_state, survival_response, add triggers, save via `saveCheckin()`
-- [ ] **Streaks and stats** — session count, current streak, window-of-tolerance percentage from `sessions` table
-- [ ] **Portfolio tab** — favourited exercises, safe-space notes, custom strategies (new tables: `favourites`, `safe_space_notes`, `custom_strategies`)
+- [ ] ~~**Dashboard (Pattern Dashboard)** — 4 descriptive charts: trigger frequency, response distribution, exercise effectiveness, time-of-day patterns~~ — REMOVED: no user-facing mood/trend or wellbeing-aggregation dashboards (S26/D03, agreed 28 Aug). Research uses raw records only. `mood_logs` table deleted from schema.
+- [ ] **Daily check-in** — home screen card: select ns_state, survival_response, add triggers, save via `saveCheckin()` (S25)
+- [ ] **Streaks and stats** — REVIEW at M3 planning against S26/D03: no user-facing trend aggregation of wellbeing metrics; default is to not build trend views (raw counts may be acceptable — confirm)
+- [ ] **Portfolio tab** — favourited exercises, safe-space notes, custom strategies (new tables: `favourites`, `safe_space_notes`, `custom_strategies`) — tables not yet in the user stories; confirm against pack before building
 - [ ] **Remaining workbook sections** — educational content for Learn, Reframe, Relationships groups
-- [ ] **Checklists** — activate `checklist_items` / `checklist_progress` tables, UI for self-assessment lists
-- [ ] **Offline-first** — install `expo-sqlite` + `drizzle-orm`, local cache as primary store, swap `lib/db.ts` internals from Supabase to SQLite. Supabase becomes opt-in backup.
-- [ ] **Onboarding workflow** — 7 gentle, skippable intro steps (supporting feature)
+- [ ] **Checklists** — activate `checklist_items` / `checklist_progress` tables, UI for self-assessment lists — not covered by stories S01–S29; confirm need at M3 planning
+- [ ] ~~**Offline-first** — install `expo-sqlite` + `drizzle-orm`, local cache as primary store, swap `lib/db.ts` internals from Supabase to SQLite. Supabase becomes opt-in backup~~ — DEFERRED (26 Aug): app is Supabase-first; offline/local storage is a later milestone. M1 scope = schema offline-ready only: timestamps on every user-data table (S29) + append-only behavioural records (D05).
+- [ ] **Onboarding workflow** — guided first-launch walkthrough (align with S01: browse-first, sign-in with Google triggered at first exercise attempt; research profile questions follow sign-up)
 
 ---
 
